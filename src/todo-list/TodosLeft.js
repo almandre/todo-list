@@ -1,19 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export default class TodosLeft extends React.PureComponent {
-    activeTodosCount = () =>
-        Object.values(this.props.todos).filter(todo => !todo.done)
-            .length;
+const TodosLeft = (props) => {
+    const { todos } = props;
 
-    componentDidMount() {
-        document.title = `Active TODOs: ${this.activeTodosCount()}`;
-    }
+    const activeTodosCount =
+        Object.values(todos).filter(todo => !todo.done).length;
 
-    componentDidUpdate() {
-        document.title = `Active TODOs: ${this.activeTodosCount()}`;
-    }
+    useEffect(() => {
+        document.title = `Active TODOs: ${ activeTodosCount }`;
+    }, [activeTodosCount]);
 
-    render() {
-        return <div>TODOs left: {this.activeTodosCount()}</div>;
-    }
-}
+    return <div>TODOs left: {activeTodosCount}</div>;
+};
+
+export default TodosLeft;

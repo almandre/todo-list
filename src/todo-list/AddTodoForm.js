@@ -1,22 +1,24 @@
 import React from 'react';
 
-export default class AddTodoForm extends React.PureComponent {
-    handleSubmit = event => {
+const AddTodoForm = (props) => {
+    const { onSubmit } = props;
+
+    const handleSubmit = event => {
         event.preventDefault();
-        this.props.onSubmit(event.target.todoBody.value);
+        onSubmit(event.target.todoBody.value);
         event.target.todoBody.value = '';
     };
 
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <input
-                    type="text"
-                    name="todoBody"
-                    placeholder="What TODO?"
-                />
-                <button type="submit">Add TODO</button>
-            </form>
-        );
-    }
-}
+    return (
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                name="todoBody"
+                placeholder="What TODO?"
+            />
+            <button type="submit">Add TODO</button>
+        </form>
+    );
+};
+
+export default AddTodoForm;

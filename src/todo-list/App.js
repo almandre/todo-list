@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import uniqueId from '../uniqueId';
 import TodoItem from './TodoItem';
@@ -6,43 +6,40 @@ import AddTodoForm from './AddTodoForm';
 import FilterButton from './FilterButton';
 import TodosLeft from './TodosLeft';
 
-class App extends React.Component {
-  state = {
-    todos: this.props.initialData.todos,
-    filterLabel: 'All',
-  };
+const App = (props) => {
+  const { initialData } = props;
 
-  addNewTodo = newTodoBody =>
-    this.setState(prevState => ({
-      todos: {
-        ...prevState.todos,
-        [uniqueId()]: {
-          body: newTodoBody,
-          done: false,
-        },
+  const [todos, setTodos] = useState(initialData.todos);
+  const [filterLabel, setFilterLabel] = useState('All');
+
+  const addNewTodo = newTodoBody =>
+    setTodos(prevTodos => ({
+      ...prevTodos,
+      [uniqueId()]: {
+        body: newTodoBody,
+        done: false,
       },
     }));
 
-  toggleTodoDone = (todoId, newDoneValue) =>
-    this.setState(prevState => ({
-      todos: {
-        ...prevState.todos,
-        [todoId]: {
-          ...prevState.todos[todoId],
-          done: newDoneValue,
-        },
+  const toggleTodoDone = (todoId, newDoneValue) =>
+    setTodos(prevTodos => ({
+      ...prevTodos,
+      [todoId]: {
+        ...prevTodos[todoId],
+        done: newDoneValue,
       },
     }));
 
-  deleteTodo = todoId =>
-    this.setState(prevState => {
-      const { [todoId]: _, ...todos } = prevState.todos;
-      return { todos };
+  const deleteTodo = todoId =>
+    setTodos(prevTodos => {
+      const { [todoId]: _, ...todos } = prevTodos;
+
+      return todos;
     });
 
-  deleteAllDoneTodos = () =>
-    this.setState(prevState => ({
-      todos: Object.entries(prevState.todos).reduce(
+  const deleteAllDoneTodos = () =>
+    setTodos(prevTodos =>
+      Object.entries(prevTodos).reduce(
         (acc, [todoId, todo]) => {
           if (!todo.done) {
             acc[todoId] = todo;
@@ -50,74 +47,65 @@ class App extends React.Component {
           return acc;
         },
         {}
-      ),
-    }));
-
-  setFilter = newFilterLabel =>
-    this.setState({ filterLabel: newFilterLabel });
-
-  shouldShowTodo = todo => {
-    const { filterLabel } = this.state;
-    return (
-      filterLabel === 'All' ||
-      (filterLabel === 'Active' && !todo.done) ||
-      (filterLabel === 'Completed' && todo.done)
+      )
     );
-  };
 
-  render() {
-    return (
-      <>
-        <header>TODO List</header>
+  const shouldShowTodo = todo =>
+    filterLabel === 'All' ||
+    (filterLabel === 'Active' && !todo.done) ||
+    (filterLabel === 'Completed' && todo.done);
 
-        <ul>
-          {Object.entries(this.state.todos).map(
-            ([todoId, todo]) =>
-              this.shouldShowTodo(todo) && (
-                <TodoItem
-                  key={todoId}
-                  id={todoId}
-                  todo={todo}
-                  toggleTodoDone={this.toggleTodoDone}
-                  deleteTodo={this.deleteTodo}
-                />
-              )
-          )}
-        </ul>
+  return (
+    <>
+      <header>TODO List</header>
 
-        <AddTodoForm onSubmit={this.addNewTodo} />
+      <ul>
+        {Object.entries(todos).map(
+          ([todoId, todo]) =>
+            shouldShowTodo(todo) && (
+              <TodoItem
+                key={todoId}
+                id={todoId}
+                todo={todo}
+                toggleTodoDone={toggleTodoDone}
+                deleteTodo={deleteTodo}
+              />
+            )
+        )}
+      </ul>
 
-        <div className="actions">
-          Show:{' '}
-          <FilterButton
-            label="All"
-            onClick={this.setFilter}
-            active={this.state.filterLabel === 'All'}
-          />
-          <FilterButton
-            label="Active"
-            onClick={this.setFilter}
-            active={this.state.filterLabel === 'Active'}
-          />
-          <FilterButton
-            label="Completed"
-            onClick={this.setFilter}
-            active={this.state.filterLabel === 'Completed'}
-          />
-        </div>
+      <AddTodoForm onSubmit={addNewTodo} />
 
-        <div className="actions">
-          <button onClick={this.deleteAllDoneTodos}>
-            Delete All Completed
-          </button>
-        </div>
+      <div className="actions">
+        Show:{' '}
+        <FilterButton
+          label="All"
+          onClick={setFilterLabel}
+          active={filterLabel === 'All'}
+        />
+        <FilterButton
+          label="Active"
+          onClick={setFilterLabel}
+          active={filterLabel === 'Active'}
+        />
+        <FilterButton
+          label="Completed"
+          onClick={setFilterLabel}
+          active={filterLabel === 'Completed'}
+        />
+      </div>
 
-        <footer>
-          <TodosLeft todos={this.state.todos} />
-        </footer>
-      </>
-    );
-  }
+      <div className="actions">
+        <button onClick={deleteAllDoneTodos}>
+          Delete All Completed
+        </button>
+      </div>
+
+      <footer>
+        <TodosLeft todos={todos} />
+      </footer>
+    </>
+  );
 }
 
 export default App;

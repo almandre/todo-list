@@ -1,17 +1,19 @@
 import React from 'react';
 
-export default class FilterButton extends React.PureComponent {
-    handleClick = () => this.props.onClick(this.props.label);
+const FilterButton = (props) => {
+    const { label, active, onClick } = props;
 
-    render() {
-        const buttonStyle = {
-            fontWeight: this.props.active ? 'bold' : 'normal',
-        };
+    const handleClick = () => onClick(label);
 
-        return (
-            <button onClick={this.handleClick} style={buttonStyle}>
-                {this.props.label}
-            </button>
-        );
-    }
-}
+    const buttonStyle = {
+        fontWeight: active ? 'bold' : 'normal',
+    };
+
+    return (
+        <button onClick={handleClick} style={buttonStyle}>
+            {label}
+        </button>
+    );
+};
+
+export default FilterButton;

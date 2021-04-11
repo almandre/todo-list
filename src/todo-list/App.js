@@ -1,5 +1,6 @@
 import React from 'react';
 
+import uniqueId from '../uniqueId';
 import TodoItem from './TodoItem';
 import AddTodoForm from './AddTodoForm';
 import FilterButton from './FilterButton';
@@ -118,8 +119,5 @@ class App extends React.Component {
     );
   }
 }
-
-const uniqueId = () =>
-  Date.now().toString(36) + Math.random().toString(36);
 
 export default App;

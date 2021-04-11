@@ -1,6 +1,11 @@
 import React from 'react';
 
-class TodosApp extends React.Component {
+import TodoItem from './TodoItem';
+import AddTodoForm from './AddTodoForm';
+import FilterButton from './FilterButton';
+import TodosLeft from './TodosLeft';
+
+class App extends React.Component {
   state = {
     todos: this.props.initialData.todos,
     filterLabel: 'All',
@@ -63,6 +68,7 @@ class TodosApp extends React.Component {
     return (
       <>
         <header>TODO List</header>
+
         <ul>
           {Object.entries(this.state.todos).map(
             ([todoId, todo]) =>
@@ -77,7 +83,9 @@ class TodosApp extends React.Component {
               )
           )}
         </ul>
+
         <AddTodoForm onSubmit={this.addNewTodo} />
+
         <div className="actions">
           Show:{' '}
           <FilterButton
@@ -96,11 +104,13 @@ class TodosApp extends React.Component {
             active={this.state.filterLabel === 'Completed'}
           />
         </div>
+
         <div className="actions">
           <button onClick={this.deleteAllDoneTodos}>
             Delete All Completed
           </button>
         </div>
+
         <footer>
           <TodosLeft todos={this.state.todos} />
         </footer>
@@ -109,89 +119,7 @@ class TodosApp extends React.Component {
   }
 }
 
-class TodoItem extends React.PureComponent {
-  handleCheckboxChange = event => {
-    const newDone = event.target.checked;
-    this.props.toggleTodoDone(this.props.id, newDone);
-  };
-
-  handleXClick = () => this.props.deleteTodo(this.props.id);
-
-  render() {
-    const { todo } = this.props;
-    const todoStyle = {
-      textDecoration: todo.done ? 'line-through' : 'none',
-    };
-    return (
-      <li>
-        <input
-          type="checkbox"
-          checked={todo.done}
-          onChange={this.handleCheckboxChange}
-        />
-        <span style={todoStyle}>{todo.body}</span>
-        <span role="link" onClick={this.handleXClick}>
-          X
-        </span>
-      </li>
-    );
-  }
-}
-
-class AddTodoForm extends React.PureComponent {
-  handleSubmit = event => {
-    event.preventDefault();
-    this.props.onSubmit(event.target.todoBody.value);
-    event.target.todoBody.value = '';
-  };
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          name="todoBody"
-          placeholder="What TODO?"
-        />
-        <button type="submit">Add TODO</button>
-      </form>
-    );
-  }
-}
-
-class FilterButton extends React.PureComponent {
-  handleClick = () => this.props.onClick(this.props.label);
-  render() {
-    const buttonStyle = {
-      fontWeight: this.props.active ? 'bold' : 'normal',
-    };
-    return (
-      <button onClick={this.handleClick} style={buttonStyle}>
-        {this.props.label}
-      </button>
-    );
-  }
-}
-
-class TodosLeft extends React.PureComponent {
-  activeTodosCount = () =>
-    Object.values(this.props.todos).filter(todo => !todo.done)
-      .length;
-
-  componentDidMount() {
-    document.title = `Active TODOs: ${this.activeTodosCount()}`;
-  }
-
-  componentDidUpdate() {
-    document.title = `Active TODOs: ${this.activeTodosCount()}`;
-  }
-
-  render() {
-    return <div>TODOs left: {this.activeTodosCount()}</div>;
-  }
-}
-
 const uniqueId = () =>
   Date.now().toString(36) + Math.random().toString(36);
 
-export default TodosApp;
+export default App;

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './todo-list/App';
 import reportWebVitals from './reportWebVitals';
-import initialData, {  } from './initialData';
+import initialData from './initialData';
 
 ReactDOM.render(
   <React.StrictMode>

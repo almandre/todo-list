@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import uniqueId from '../uniqueId';
 import TodoItem from './TodoItem';
@@ -6,49 +6,55 @@ import AddTodoForm from './AddTodoForm';
 import FilterButton from './FilterButton';
 import TodosLeft from './TodosLeft';
 
-const App = (props) => {
+const TodoList = (props) => {
   const { initialData } = props;
 
   const [todos, setTodos] = useState(initialData.todos);
   const [filterLabel, setFilterLabel] = useState('All');
 
-  const addNewTodo = newTodoBody =>
-    setTodos(prevTodos => ({
-      ...prevTodos,
-      [uniqueId()]: {
-        body: newTodoBody,
-        done: false,
-      },
-    }));
+  const {
+    addNewTodo,
+    toggleTodoDone,
+    deleteTodo,
+    deleteAllDoneTodos,
+  } = useMemo(
+    () => ({
+      addNewTodo: newTodoBody =>
+        setTodos(prevTodos => ({
+          ...prevTodos,
+          [uniqueId()]: {
+            body: newTodoBody,
+            done: false,
+          },
+        })),
 
-  const toggleTodoDone = (todoId, newDoneValue) =>
-    setTodos(prevTodos => ({
-      ...prevTodos,
-      [todoId]: {
-        ...prevTodos[todoId],
-        done: newDoneValue,
-      },
-    }));
+      toggleTodoDone: (todoId, newDoneValue) =>
+        setTodos(prevTodos => ({
+          ...prevTodos,
+          [todoId]: {
+            ...prevTodos[todoId],
+            done: newDoneValue,
+          },
+        })),
 
-  const deleteTodo = todoId =>
-    setTodos(prevTodos => {
-      const { [todoId]: _, ...todos } = prevTodos;
+      deleteTodo: todoId =>
+        setTodos(prevTodos => {
+          const { [todoId]: _, ...todos } = prevTodos;
+          return todos;
+        }),
 
-      return todos;
-    });
-
-  const deleteAllDoneTodos = () =>
-    setTodos(prevTodos =>
-      Object.entries(prevTodos).reduce(
-        (acc, [todoId, todo]) => {
-          if (!todo.done) {
-            acc[todoId] = todo;
-          }
-          return acc;
-        },
-        {}
-      )
-    );
+      deleteAllDoneTodos: () =>
+        setTodos(prevTodos =>
+          Object.entries(prevTodos).reduce((acc, [todoId, todo]) => {
+            if (!todo.done) {
+              acc[todoId] = todo;
+            }
+            return acc;
+          }, {})
+        ),
+    }),
+    []
+  );
 
   const shouldShowTodo = todo =>
     filterLabel === 'All' ||
@@ -108,4 +114,4 @@ const App = (props) => {
   );
 }
 
-export default App;
+export default TodoList;

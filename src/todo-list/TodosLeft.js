@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const TodosLeft = (props) => {
+function TodosLeft(props) {
     const { todos } = props;
 
     const activeTodosCount =
@@ -11,6 +11,6 @@ const TodosLeft = (props) => {
     }, [activeTodosCount]);
 
     return <div>TODOs left: {activeTodosCount}</div>;
-};
+}
 
-export default TodosLeft;
+export default React.memo(TodosLeft);

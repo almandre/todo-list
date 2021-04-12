@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FilterButton = (props) => {
+function FilterButton(props) {
     const { label, active, onClick } = props;
 
     const handleClick = () => onClick(label);
@@ -14,6 +14,6 @@ const FilterButton = (props) => {
             {label}
         </button>
     );
-};
+}
 
-export default FilterButton;
+export default React.memo(FilterButton);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TodoItem = (props) => {
+function TodoItem(props) {
     const { id, todo, toggleTodoDone, deleteTodo } = props;
 
     const handleCheckboxChange = event => {
@@ -28,6 +28,6 @@ const TodoItem = (props) => {
             </span>
         </li>
     );
-};
+}
 
-export default TodoItem;
+export default React.memo(TodoItem);

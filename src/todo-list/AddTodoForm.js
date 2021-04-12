@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AddTodoForm = (props) => {
+function AddTodoForm(props) {
     const { onSubmit } = props;
 
     const handleSubmit = event => {
@@ -19,6 +19,6 @@ const AddTodoForm = (props) => {
             <button type="submit">Add TODO</button>
         </form>
     );
-};
+}
 
-export default AddTodoForm;
+export default React.memo(AddTodoForm);

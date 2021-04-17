@@ -10,13 +10,15 @@ function AddTodoForm(props) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form data-testid="add-todo-form" onSubmit={handleSubmit}>
             <input
+                data-testid="add-todo-input"
                 type="text"
                 name="todoBody"
                 placeholder="What TODO?"
             />
-            <button type="submit">Add TODO</button>
+
+            <button data-testid="add-todo-button" type="submit">Add TODO</button>
         </form>
     );
 }

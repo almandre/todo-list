@@ -16,14 +16,15 @@ function TodoItem(props) {
     };
 
     return (
-        <li>
+        <li data-testid="todo-item">
             <input
+                data-testid="todo-item-toggle"
                 type="checkbox"
                 checked={todo.done}
                 onChange={handleCheckboxChange}
             />
-            <span style={todoStyle}>{todo.body}</span>
-            <span role="link" onClick={handleXClick}>
+            <span data-testid="todo-item-description" style={todoStyle}>{todo.body}</span>
+            <span data-testid="todo-item-delete" role="link" onClick={handleXClick}>
                 X
             </span>
         </li>

@@ -10,7 +10,7 @@ function FilterButton(props) {
     };
 
     return (
-        <button onClick={handleClick} style={buttonStyle}>
+        <button data-testid="filter-button" onClick={handleClick} style={buttonStyle}>
             {label}
         </button>
     );

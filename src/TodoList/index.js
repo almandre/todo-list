@@ -102,7 +102,7 @@ const TodoList = (props) => {
       </div>
 
       <div className="actions">
-        <button onClick={deleteAllDoneTodos}>
+        <button data-testid="delete-todo-button" onClick={deleteAllDoneTodos}>
           Delete All Completed
         </button>
       </div>

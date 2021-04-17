@@ -10,7 +10,7 @@ function TodosLeft(props) {
         document.title = `Active TODOs: ${ activeTodosCount }`;
     }, [activeTodosCount]);
 
-    return <div>TODOs left: {activeTodosCount}</div>;
+    return <div data-testid="todo-left">TODOs left: {activeTodosCount}</div>;
 }
 
 export default React.memo(TodosLeft);

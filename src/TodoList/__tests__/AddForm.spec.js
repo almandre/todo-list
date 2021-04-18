@@ -16,6 +16,14 @@ const renderComponent = (
     />
 );
 
+const typeTodo = (value) => ({
+    target: {
+        todoBody: {
+            value
+        }
+    }
+});
+
 describe('AddForm', () => {
     afterEach(() => {
         cleanup();
@@ -36,9 +44,8 @@ describe('AddForm', () => {
         const addTodo = jest.fn();
         const { getByTestId } = renderComponent(addTodo);
         const form = getByTestId(testIds.formId);
-        const input = within(form).getByTestId(testIds.inputId);
 
-        input.setAttribute('value', 'Test Test');
+        fireEvent.change(form, typeTodo('Test Test'));
         fireEvent.submit(form);
 
         expect(addTodo).toHaveBeenCalledWith('Test Test');

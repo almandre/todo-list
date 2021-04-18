@@ -82,7 +82,7 @@ const TodoList = (props) => {
 
       <AddTodoForm onSubmit={addNewTodo} />
 
-      <div className="actions">
+      <div data-testid="todo-filter" className="actions">
         Show:{' '}
         <FilterButton
           label="All"

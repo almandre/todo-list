@@ -11,6 +11,7 @@ const testIds = {
   toggleCheckbox: 'todo-item-toggle',
   description: 'todo-item-description',
   deleteLink: 'todo-item-delete',
+  filter: 'todo-filter',
   filtersButton: 'filter-button',
   deleteButton: 'delete-todo-button',
   todoLeft: 'todo-left',
@@ -143,5 +144,50 @@ describe('TodoList', () => {
 
     expect(todoItems).toHaveLength(1);
     expect(todoLeft).toHaveTextContent(1);
+  });
+
+  test('should filter all completed todos', () => {
+    const { getByTestId, getAllByTestId } = renderComponent(todoList.items);
+    const filter = getByTestId(testIds.filter);
+    const filterButton = within(filter).getByText('Completed');
+
+    let todoItems = getAllByTestId(testIds.todoItems);
+    expect(todoItems).toHaveLength(4);
+
+    fireEvent.click(filterButton);
+
+    todoItems = getAllByTestId(testIds.todoItems);
+    expect(todoItems).toHaveLength(3);
+  });
+
+  test('should filter all active todos', () => {
+    const { getByTestId, getAllByTestId } = renderComponent(todoList.items);
+    const filter = getByTestId(testIds.filter);
+    const filterButton = within(filter).getByText('Active');
+
+    let todoItems = getAllByTestId(testIds.todoItems);
+    expect(todoItems).toHaveLength(4);
+
+    fireEvent.click(filterButton);
+
+    todoItems = getAllByTestId(testIds.todoItems);
+    expect(todoItems).toHaveLength(1);
+  });
+
+  test('should show all todos after filter', () => {
+    const { getByTestId, getAllByTestId } = renderComponent(todoList.items);
+    const filter = getByTestId(testIds.filter);
+
+    let filterButton = within(filter).getByText('Active');
+    fireEvent.click(filterButton);
+
+    let todoItems = getAllByTestId(testIds.todoItems);
+    expect(todoItems).toHaveLength(1);
+
+    filterButton = within(filter).getByText('All');
+    fireEvent.click(filterButton);
+
+    todoItems = getAllByTestId(testIds.todoItems);
+    expect(todoItems).toHaveLength(4);
   });
 });

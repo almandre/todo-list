@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './TodoList';
+import App from './components/TodoList';
 import reportWebVitals from './reportWebVitals';
 import initialData from './initialData';
 

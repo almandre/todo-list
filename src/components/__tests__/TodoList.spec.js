@@ -1,7 +1,7 @@
 import React from 'react';
 import { cleanup, render, fireEvent, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import TodoList from '../index';
+import TodoList from '../TodoList';
 
 const renderComponent = (todos) => render(<TodoList initialData={{ todos }} />);
 
